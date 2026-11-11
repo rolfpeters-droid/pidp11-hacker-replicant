@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PiDP-11 — Hacker Replicant</title>
+<link rel="stylesheet" href="rp-design-system.css">
+<style>
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--rp-dark); color: var(--rp-off-white); display: flex; flex-direction: column; overflow: hidden; }
+
+  .hr-bg {
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(160,50,110,0.18), transparent 45%),
+      radial-gradient(circle at 85% 75%, rgba(110,30,40,0.16), transparent 45%),
+      var(--rp-dark);
+  }
+
+  .hr-wrap { flex: 1; display: flex; flex-direction: column; padding: var(--rp-space-6); gap: var(--rp-space-4); min-height: 0; }
+  .hr-header { display: flex; align-items: baseline; justify-content: space-between; gap: var(--rp-space-4); flex-wrap: wrap; }
+  .hr-header h1 { font-size: var(--rp-text-2xl); color: var(--rp-white); margin: 0; }
+  .hr-sub { color: var(--rp-gray-500); font-size: var(--rp-text-sm); }
+
+  .hr-body { flex: 1; display: flex; gap: var(--rp-space-4); min-height: 0; }
+  .hr-left, .hr-right { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: var(--rp-space-3); }
+
+  .hr-panel-label { font-family: var(--rp-font-mono); font-size: var(--rp-text-xs); color: var(--rp-gray-500); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* ─── PiDP-11 cabinet styling, same pattern as the other Hacker Replicants ─── */
+  .hr-left {
+    --hp-cream: #d9c8c8;
+    --hp-cream-light: #e8dcdc;
+    --hp-cream-dark: #b49c9c;
+    --hp-panel: #0a140c;
+    --hp-blue: #8c2a5c;
+    --hp-phosphor: #52e67a;
+    gap: 0;
+  }
+  .hp-screen {
+    display: flex; flex-direction: column; flex: 1; min-height: 0;
+    gap: var(--rp-space-3);
+  }
+  .hp-lights { display: flex; align-items: center; gap: var(--rp-space-3); padding: 2px var(--rp-space-1); flex-shrink: 0; }
+  .hp-lights .bank { display: flex; gap: 5px; }
+  .hp-lights .lamp {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #a8f0bc, var(--hp-phosphor) 70%, #1f7a3a);
+    box-shadow: 0 0 4px rgba(82,230,122,0.5), inset 0 0 1px rgba(0,0,0,0.3);
+  }
+  .hp-lights .lamp.off { background: radial-gradient(circle at 35% 30%, #a39a7f, #6b6350); box-shadow: inset 0 0 2px rgba(0,0,0,0.4); }
+  .hp-plate {
+    margin-left: auto; font-family: var(--rp-font-mono); font-size: var(--rp-text-xs);
+    color: #c9d8cc; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;
+    opacity: 0.85;
+  }
+  .hp-screen-inner { flex: 1; min-height: 0; border-radius: 4px; overflow: hidden; }
+  .hr-left iframe { width: 100%; height: 100%; border: none; border-radius: 3px; background: #000; }
+
+  /* ─── DEC VT52-styled right-hand chat panel, shared across the Hacker Replicant family ─── */
+  .hr-right {
+    --vt52-case: #cdbe9f; --vt52-case-light: #ded0b2; --vt52-case-dark: #a3907050;
+    --vt52-bezel: #27241f; --vt52-screen: #0a0f0a;
+    --vt52-phosphor: #52e67a; --vt52-phosphor-dim: #2f8f4d;
+    --vt52-blue: #2a5ca8; --vt52-red: #a3302c;
+    gap: 0;
+  }
+  .vt52-case {
+    display: flex; flex-direction: column; flex: 1; min-height: 0;
+    background: linear-gradient(175deg, var(--vt52-case-light), var(--vt52-case) 55%, var(--vt52-case-dark));
+    border-radius: 10px; padding: var(--rp-space-4);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+    gap: var(--rp-space-3);
+  }
+  .vt52-vents { display: flex; flex-direction: column; gap: 3px; padding: 0 2px; }
+  .vt52-vents span { display: block; height: 2px; border-radius: 1px; background: rgba(39,36,31,0.35); }
+  .vt52-plate {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--rp-space-3);
+    font-family: var(--rp-font-mono); font-size: var(--rp-text-xs); color: var(--vt52-bezel);
+    letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; padding: 2px var(--rp-space-1);
+  }
+  .vt52-plate .model { opacity: 0.6; font-weight: 600; letter-spacing: 0.04em; }
+  .toggle-row {
+    display: flex; align-items: center; gap: var(--rp-space-3);
+    padding: var(--rp-space-2) var(--rp-space-3); border-radius: 8px;
+    background: rgba(39,36,31,0.12); box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
+  }
+  .toggle-sw { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+  .toggle-sw input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; cursor: pointer; inset: 0; border-radius: 6px; background: var(--vt52-bezel);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.15);
+    transition: background var(--rp-transition);
+  }
+  .toggle-slider::before {
+    content: ""; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px;
+    background: linear-gradient(175deg, #e8e1d0, #b7a888); border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.4); transition: transform var(--rp-transition);
+  }
+  .toggle-sw input:checked + .toggle-slider { background: var(--vt52-red); }
+  .toggle-sw input:checked + .toggle-slider::before { transform: translateX(20px); background: linear-gradient(175deg, #ffd9d0, #e8a79e); }
+  .toggle-label { font-family: var(--rp-font-mono); font-size: var(--rp-text-sm); font-weight: 700; color: var(--vt52-bezel); }
+  .toggle-label.on { color: var(--vt52-red); }
+  .toggle-hint { font-family: var(--rp-font-mono); font-size: 10px; color: rgba(39,36,31,0.6); margin-left: auto; text-align: right; }
+  .vt52-screen-frame {
+    flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--vt52-bezel);
+    border-radius: 10px; padding: var(--rp-space-3);
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .hr-log {
+    flex: 1; min-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: var(--rp-space-3);
+    padding: var(--rp-space-4);
+    background: radial-gradient(ellipse at 50% 0%, rgba(82,230,122,0.05), transparent 70%), var(--vt52-screen);
+    border-radius: 6px; font-family: var(--rp-font-mono);
+  }
+  .msg { max-width: 92%; font-size: var(--rp-text-sm); line-height: var(--rp-leading-normal); white-space: pre-wrap; }
+  .msg-user { align-self: flex-end; color: var(--vt52-phosphor-dim); text-shadow: 0 0 2px rgba(47,143,77,0.5); }
+  .msg-user::before { content: "> "; opacity: 0.7; }
+  .msg-agent { align-self: flex-start; color: var(--vt52-phosphor); text-shadow: 0 0 6px rgba(82,230,122,0.55), 0 0 1px rgba(82,230,122,0.8); }
+  .msg-action {
+    align-self: flex-start; font-family: var(--rp-font-mono); font-size: var(--rp-text-xs);
+    color: #7fb8e8; text-shadow: 0 0 5px rgba(127,184,232,0.5);
+    border: 1px dashed rgba(127,184,232,0.35); padding: var(--rp-space-2) var(--rp-space-3); border-radius: 4px;
+  }
+  .msg-pending { opacity: 0.75; font-style: italic; }
+  .hr-input-row { display: flex; gap: var(--rp-space-2); }
+  .hr-input-row textarea {
+    flex: 1; resize: none; min-height: 48px; max-height: 160px;
+    font-family: var(--rp-font-mono); font-size: var(--rp-text-sm);
+    color: var(--vt52-phosphor); background: var(--vt52-bezel); caret-color: var(--vt52-phosphor);
+    border: none; border-radius: 6px; padding: var(--rp-space-3) var(--rp-space-4); outline: none;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+  }
+  .hr-input-row textarea::placeholder { color: var(--vt52-phosphor-dim); }
+  .hr-input-row textarea:focus { box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), 0 0 0 2px rgba(82,230,122,0.4); }
+  .vt52-send {
+    font-family: var(--rp-font-mono); font-weight: 700; letter-spacing: 0.04em;
+    color: var(--rp-off-white); background: linear-gradient(175deg, var(--vt52-blue), #1a3d70);
+    border: none; border-radius: 6px; padding: 0 var(--rp-space-5);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+    cursor: pointer; transition: transform 0.08s ease;
+  }
+  .vt52-send:hover { filter: brightness(1.08); }
+  .vt52-send:active { transform: translateY(2px); box-shadow: 0 0 0 rgba(0,0,0,0.35); }
+
+  @media (max-width: 900px) {
+    .hr-wrap { padding: var(--rp-space-4); }
+    .hr-body { flex-direction: column; overflow-y: auto; }
+    .hr-left, .hr-right { flex: none; min-height: 420px; }
+  }
+  @media (max-width: 480px) {
+    .hr-left, .hr-right { min-height: 340px; }
+    .toggle-hint { display: none; }
+  }
+</style>
+</head>
+<body class="rp-dark">
+<div class="hr-bg"></div>
+
+<nav class="rp-nav">
+  <a href="__CONSOLE_URL__" class="rp-nav-brand">PiDP-11</a>
+  <a href="__CONSOLE_URL__" class="rp-nav-link">&larr; Back to the PiDP-11 console</a>
+</nav>
+
+<div class="hr-wrap">
+  <div class="hr-header">
+    <h1>Hacker Replicant</h1>
+    <div class="hr-sub">AI tutor for the PiDP-11 &mdash; 2.11BSD, the PDP-11/70, and Unix history</div>
+  </div>
+
+  <div class="hr-body">
+    <div class="hr-left">
+      <div class="hp-screen">
+        <div class="hp-lights" aria-hidden="true">
+          <div class="bank"><span class="lamp"></span><span class="lamp off"></span><span class="lamp"></span><span class="lamp off"></span><span class="lamp"></span><span class="lamp off"></span></div>
+          <div class="bank"><span class="lamp off"></span><span class="lamp"></span><span class="lamp off"></span><span class="lamp off"></span><span class="lamp"></span><span class="lamp off"></span></div>
+          <span class="hp-plate">PiDP-11/70 &middot; console (you drive)</span>
+        </div>
+        <div class="hp-screen-inner">
+          <iframe src="__CONSOLE_URL__" title="PiDP-11 console"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div class="hr-right">
+      <div class="vt52-case">
+        <div class="vt52-vents" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="vt52-plate">
+          <span>Hacker Replicant</span>
+          <span class="model">PDP-11/70 &middot; 2.11BSD</span>
+        </div>
+
+        <div class="toggle-row">
+          <label class="toggle-sw">
+            <input type="checkbox" id="tools-toggle">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label" id="toggle-label">Control: off</span>
+          <span class="toggle-hint" id="action-hint">max <span id="limit-display">5</span> actions,<br>then it asks to continue</span>
+        </div>
+
+        <div class="toggle-row">
+          <label class="toggle-sw">
+            <input type="checkbox" id="backend-toggle">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label" id="backend-label">Model: Local</span>
+          <span class="toggle-hint">on = cloud backend,<br>see README for setup</span>
+        </div>
+
+        <div class="vt52-screen-frame">
+          <div class="hr-log" id="chat-log"></div>
+        </div>
+
+        <form class="hr-input-row" id="chat-form">
+          <textarea id="chat-input" placeholder="Ask something about 2.11BSD, the PDP-11/70, or Unix history..." rows="2"></textarea>
+          <button type="submit" class="vt52-send">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ACTION_LIMIT = 5;
+  const GREETING = "Hi! I'm the Hacker Replicant for the PiDP-11. Ask me about 2.11BSD, the PDP-11/70 (split I&D, overlays, octal), or how Unix grew up here. The control toggle is off -- I'll just talk, I won't touch the machine unless you turn it on.";
+
+  const log = document.getElementById('chat-log');
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('chat-input');
+  const toggle = document.getElementById('tools-toggle');
+  const toggleLabel = document.getElementById('toggle-label');
+  const backendToggle = document.getElementById('backend-toggle');
+  const backendLabel = document.getElementById('backend-label');
+  const actionHint = document.getElementById('action-hint');
+  document.getElementById('limit-display').textContent = ACTION_LIMIT;
+
+  let messages = [];
+
+  // The action limit only applies while the agent is driving the machine --
+  // this just keeps the hint text accurate regardless of which toggle state
+  // you're in.
+  function updateActionHint() {
+    actionHint.innerHTML = 'max <span id="limit-display">' + ACTION_LIMIT + '</span> actions,<br>then it asks to continue';
+  }
+  updateActionHint();
+
+  addMsg('agent', GREETING);
+
+  toggle.addEventListener('change', () => {
+    toggleLabel.textContent = 'Control: ' + (toggle.checked ? 'ON' : 'off');
+    toggleLabel.classList.toggle('on', toggle.checked);
+  });
+
+  backendToggle.addEventListener('change', () => {
+    backendLabel.textContent = 'Model: ' + (backendToggle.checked ? 'Cloud' : 'Local');
+    backendLabel.classList.toggle('on', backendToggle.checked);
+  });
+
+  function addMsg(who, text) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + (who === 'user' ? 'msg-user' : 'msg-agent');
+    div.textContent = text;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+    return div;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    addMsg('user', text);
+    messages.push({ role: 'user', content: text });
+
+    const usingCloud = backendToggle.checked;
+    const pendingDiv = addMsg('agent', '...thinking...');
+    pendingDiv.classList.add('msg-pending');
+    let elapsed = 0;
+    const ticker = setInterval(() => {
+      elapsed += 1;
+      pendingDiv.textContent = `...thinking... (${elapsed}s — this can take a while depending on your backend)`;
+    }, 1000);
+
+    try {
+      const r = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages, toolsEnabled: toggle.checked, actionLimit: ACTION_LIMIT, backend: usingCloud ? 'cloud' : 'local' }),
+      });
+      if (!r.ok || !r.body) throw new Error('HTTP ' + r.status);
+
+      const reader = r.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
+      let finished = false;
+
+      while (!finished) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        let idx;
+        while ((idx = buf.indexOf('\n\n')) !== -1) {
+          const chunk = buf.slice(0, idx);
+          buf = buf.slice(idx + 2);
+          if (!chunk.startsWith('data: ')) continue;
+          const evt = JSON.parse(chunk.slice(6));
+
+          if (evt.type === 'status') {
+            // just let the ticker run
+          } else if (evt.type === 'action') {
+            const argStr = evt.args && evt.args.text ? ` "${evt.args.text}"` : '';
+            pendingDiv.insertAdjacentHTML('beforebegin', `<div class="msg-action">→ ${evt.name}${argStr}</div>`);
+            log.scrollTop = log.scrollHeight;
+          } else if (evt.type === 'done') {
+            clearInterval(ticker);
+            pendingDiv.remove();
+            const responseText = evt.response || '(no answer)';
+            addMsg('agent', responseText);
+            messages.push({ role: 'assistant', content: responseText });
+            finished = true;
+          } else if (evt.type === 'error') {
+            clearInterval(ticker);
+            pendingDiv.remove();
+            addMsg('agent', '⚠️ ' + evt.message);
+            finished = true;
+          }
+        }
+      }
+    } catch (err) {
+      clearInterval(ticker);
+      pendingDiv.remove();
+      addMsg('agent', 'Connection to the Hacker Replicant failed: ' + err.message);
+    } finally {
+      clearInterval(ticker);
+    }
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      form.requestSubmit();
+    }
+  });
+</script>
+
+</body>
+</html>

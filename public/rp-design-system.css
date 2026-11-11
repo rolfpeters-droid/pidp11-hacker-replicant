@@ -1,0 +1,825 @@
+/* ============================================================
+   ROLF PETERS — DESIGN SYSTEM v1.0
+   Gebruik: importeer dit bestand in elk project
+   @import url('rp-design-system.css');
+   ============================================================ */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Serif:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+
+/* ============================================================
+   1. DESIGN TOKENS
+   ============================================================ */
+
+:root {
+
+  /* -- Kleuren -- */
+  --rp-amber:        #C07A20;
+  --rp-amber-light:  #E8A84A;
+  --rp-amber-dark:   #8F5A14;
+  --rp-red:          #B04030;
+  --rp-red-light:    #C95540;
+  --rp-red-dark:     #7A2C20;
+
+  --rp-dark:         #1E1C1A;
+  --rp-dark-2:       #2C2A28;
+  --rp-dark-3:       #3A3836;
+
+  --rp-gray-700:     #4A4644;
+  --rp-gray-500:     #6B6460;
+  --rp-gray-300:     #D4CFC8;
+  --rp-gray-100:     #EDE8E0;
+  --rp-off-white:    #F4EFE6;
+  --rp-white:        #FFFFFF;
+
+  /* Semantisch */
+  --rp-color-primary:       var(--rp-amber);
+  --rp-color-primary-hover: var(--rp-amber-dark);
+  --rp-color-accent:        var(--rp-red);
+  --rp-color-text:          var(--rp-dark);
+  --rp-color-text-muted:    var(--rp-gray-500);
+  --rp-color-bg:            var(--rp-off-white);
+  --rp-color-bg-card:       var(--rp-white);
+  --rp-color-border:        var(--rp-gray-300);
+
+  /* -- Typografie -- */
+  --rp-font-sans:   'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --rp-font-serif:  'IBM Plex Serif', Georgia, serif;
+  --rp-font-mono:   'JetBrains Mono', 'Courier New', monospace;
+
+  --rp-text-xs:   0.75rem;    /* 12px */
+  --rp-text-sm:   0.875rem;   /* 14px */
+  --rp-text-base: 1rem;       /* 16px */
+  --rp-text-lg:   1.125rem;   /* 18px */
+  --rp-text-xl:   1.25rem;    /* 20px */
+  --rp-text-2xl:  1.5rem;     /* 24px */
+  --rp-text-3xl:  1.875rem;   /* 30px */
+  --rp-text-4xl:  2.25rem;    /* 36px */
+
+  --rp-leading-tight:  1.25;
+  --rp-leading-normal: 1.6;
+  --rp-leading-loose:  1.8;
+
+  /* -- Spacing -- */
+  --rp-space-1:  0.25rem;   /* 4px */
+  --rp-space-2:  0.5rem;    /* 8px */
+  --rp-space-3:  0.75rem;   /* 12px */
+  --rp-space-4:  1rem;      /* 16px */
+  --rp-space-5:  1.25rem;   /* 20px */
+  --rp-space-6:  1.5rem;    /* 24px */
+  --rp-space-8:  2rem;      /* 32px */
+  --rp-space-10: 2.5rem;    /* 40px */
+  --rp-space-12: 3rem;      /* 48px */
+  --rp-space-16: 4rem;      /* 64px */
+
+  /* -- Borders & Shadows -- */
+  --rp-radius-sm: 3px;
+  --rp-radius:    6px;
+  --rp-radius-lg: 10px;
+  --rp-radius-xl: 16px;
+
+  --rp-shadow-sm: 0 1px 3px rgba(30,28,26,0.08);
+  --rp-shadow:    0 2px 8px rgba(30,28,26,0.12);
+  --rp-shadow-lg: 0 4px 20px rgba(30,28,26,0.16);
+
+  /* -- Transitions -- */
+  --rp-transition: 150ms ease;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --rp-color-text:       var(--rp-off-white);
+    --rp-color-text-muted: var(--rp-gray-300);
+    --rp-color-bg:         var(--rp-dark);
+    --rp-color-bg-card:    var(--rp-dark-2);
+    --rp-color-border:     var(--rp-dark-3);
+  }
+}
+
+/* Dark theme class (handmatig) */
+.rp-dark {
+  --rp-color-text:       var(--rp-off-white);
+  --rp-color-text-muted: var(--rp-gray-300);
+  --rp-color-bg:         var(--rp-dark);
+  --rp-color-bg-card:    var(--rp-dark-2);
+  --rp-color-border:     var(--rp-dark-3);
+}
+
+
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--rp-font-sans);
+  font-size: var(--rp-text-base);
+  line-height: var(--rp-leading-normal);
+  color: var(--rp-color-text);
+  background-color: var(--rp-color-bg);
+}
+
+img, video { max-width: 100%; display: block; }
+a { color: var(--rp-amber); text-decoration: none; }
+a:hover { color: var(--rp-amber-dark); text-decoration: underline; }
+
+
+/* ============================================================
+   3. TYPOGRAFIE
+   ============================================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--rp-font-sans);
+  font-weight: 600;
+  line-height: var(--rp-leading-tight);
+  color: var(--rp-color-text);
+}
+
+h1 { font-size: var(--rp-text-4xl); margin-bottom: var(--rp-space-6); }
+h2 { font-size: var(--rp-text-3xl); margin-bottom: var(--rp-space-5); }
+h3 { font-size: var(--rp-text-2xl); margin-bottom: var(--rp-space-4); }
+h4 { font-size: var(--rp-text-xl);  margin-bottom: var(--rp-space-3); }
+h5 { font-size: var(--rp-text-lg);  margin-bottom: var(--rp-space-3); }
+h6 { font-size: var(--rp-text-base); margin-bottom: var(--rp-space-2); }
+
+p { margin-bottom: var(--rp-space-4); }
+
+.rp-lead {
+  font-size: var(--rp-text-lg);
+  color: var(--rp-color-text-muted);
+  line-height: var(--rp-leading-loose);
+}
+
+.rp-small { font-size: var(--rp-text-sm); }
+.rp-muted { color: var(--rp-color-text-muted); }
+.rp-mono  { font-family: var(--rp-font-mono); }
+
+.rp-overline {
+  font-size: var(--rp-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rp-color-text-muted);
+}
+
+blockquote {
+  border-left: 3px solid var(--rp-amber);
+  padding: var(--rp-space-3) var(--rp-space-5);
+  margin: var(--rp-space-6) 0;
+  color: var(--rp-color-text-muted);
+  font-style: italic;
+}
+
+code {
+  font-family: var(--rp-font-mono);
+  font-size: 0.875em;
+  background: var(--rp-gray-100);
+  color: var(--rp-amber-dark);
+  padding: 0.1em 0.4em;
+  border-radius: var(--rp-radius-sm);
+}
+
+pre {
+  font-family: var(--rp-font-mono);
+  font-size: var(--rp-text-sm);
+  background: var(--rp-dark);
+  color: var(--rp-off-white);
+  padding: var(--rp-space-5);
+  border-radius: var(--rp-radius);
+  overflow-x: auto;
+  border-left: 3px solid var(--rp-amber);
+  margin: var(--rp-space-6) 0;
+}
+
+pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--rp-color-border);
+  margin: var(--rp-space-8) 0;
+}
+
+
+/* ============================================================
+   4. LAYOUT
+   ============================================================ */
+
+.rp-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--rp-space-6);
+}
+
+.rp-container-sm  { max-width: 720px;  margin: 0 auto; padding: 0 var(--rp-space-6); }
+.rp-container-md  { max-width: 960px;  margin: 0 auto; padding: 0 var(--rp-space-6); }
+.rp-container-xl  { max-width: 1440px; margin: 0 auto; padding: 0 var(--rp-space-6); }
+
+.rp-grid {
+  display: grid;
+  gap: var(--rp-space-6);
+}
+.rp-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.rp-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.rp-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 768px) {
+  .rp-grid-2,
+  .rp-grid-3,
+  .rp-grid-4 { grid-template-columns: 1fr; }
+}
+
+.rp-flex         { display: flex; }
+.rp-flex-center  { display: flex; align-items: center; justify-content: center; }
+.rp-flex-between { display: flex; align-items: center; justify-content: space-between; }
+.rp-gap-2  { gap: var(--rp-space-2); }
+.rp-gap-4  { gap: var(--rp-space-4); }
+.rp-gap-6  { gap: var(--rp-space-6); }
+
+
+/* ============================================================
+   5. COMPONENTEN
+   ============================================================ */
+
+/* -- Buttons -- */
+
+.rp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rp-space-2);
+  padding: var(--rp-space-3) var(--rp-space-5);
+  font-family: var(--rp-font-sans);
+  font-size: var(--rp-text-sm);
+  font-weight: 600;
+  line-height: 1;
+  border-radius: var(--rp-radius);
+  border: 2px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--rp-transition), color var(--rp-transition), border-color var(--rp-transition);
+}
+
+.rp-btn-primary {
+  background: var(--rp-amber);
+  color: var(--rp-white);
+  border-color: var(--rp-amber);
+}
+.rp-btn-primary:hover {
+  background: var(--rp-amber-dark);
+  border-color: var(--rp-amber-dark);
+  color: var(--rp-white);
+  text-decoration: none;
+}
+
+.rp-btn-secondary {
+  background: transparent;
+  color: var(--rp-amber);
+  border-color: var(--rp-amber);
+}
+.rp-btn-secondary:hover {
+  background: var(--rp-amber);
+  color: var(--rp-white);
+  text-decoration: none;
+}
+
+.rp-btn-danger {
+  background: var(--rp-red);
+  color: var(--rp-white);
+  border-color: var(--rp-red);
+}
+.rp-btn-danger:hover {
+  background: var(--rp-red-dark);
+  border-color: var(--rp-red-dark);
+  color: var(--rp-white);
+  text-decoration: none;
+}
+
+.rp-btn-ghost {
+  background: transparent;
+  color: var(--rp-color-text);
+  border-color: var(--rp-color-border);
+}
+.rp-btn-ghost:hover {
+  background: var(--rp-gray-100);
+  text-decoration: none;
+}
+
+.rp-btn-sm { padding: var(--rp-space-2) var(--rp-space-3); font-size: var(--rp-text-xs); }
+.rp-btn-lg { padding: var(--rp-space-4) var(--rp-space-8); font-size: var(--rp-text-base); }
+
+
+/* -- Cards -- */
+
+.rp-card {
+  background: var(--rp-color-bg-card);
+  border-radius: var(--rp-radius-lg);
+  padding: var(--rp-space-6);
+  box-shadow: var(--rp-shadow);
+  border: 1px solid var(--rp-color-border);
+}
+
+.rp-card-accent {
+  border-top: 3px solid var(--rp-amber);
+}
+
+.rp-card-accent-red {
+  border-top: 3px solid var(--rp-red);
+}
+
+.rp-card-header {
+  padding: var(--rp-space-5) var(--rp-space-6);
+  background: var(--rp-amber);
+  border-radius: var(--rp-radius-lg) var(--rp-radius-lg) 0 0;
+  margin: calc(-1 * var(--rp-space-6)) calc(-1 * var(--rp-space-6)) var(--rp-space-6);
+  color: var(--rp-white);
+  font-weight: 600;
+}
+
+.rp-card-dark {
+  background: var(--rp-dark-2);
+  color: var(--rp-off-white);
+  border-color: var(--rp-dark-3);
+}
+
+
+/* -- Badges -- */
+
+.rp-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2em 0.6em;
+  font-size: var(--rp-text-xs);
+  font-weight: 600;
+  border-radius: 999px;
+  letter-spacing: 0.03em;
+}
+
+.rp-badge-amber { background: rgba(192,122,32,0.15); color: var(--rp-amber-dark); }
+.rp-badge-red   { background: rgba(176,64,48,0.15);  color: var(--rp-red-dark); }
+.rp-badge-gray  { background: var(--rp-gray-100);     color: var(--rp-gray-700); }
+.rp-badge-dark  { background: var(--rp-dark);          color: var(--rp-off-white); }
+
+
+/* -- Formulieren -- */
+
+.rp-label {
+  display: block;
+  font-size: var(--rp-text-sm);
+  font-weight: 600;
+  margin-bottom: var(--rp-space-1);
+  color: var(--rp-color-text);
+}
+
+.rp-input,
+.rp-textarea,
+.rp-select {
+  width: 100%;
+  font-family: var(--rp-font-sans);
+  font-size: var(--rp-text-base);
+  color: var(--rp-color-text);
+  background: var(--rp-color-bg-card);
+  border: 1px solid var(--rp-color-border);
+  border-radius: var(--rp-radius);
+  padding: var(--rp-space-3) var(--rp-space-4);
+  transition: border-color var(--rp-transition), box-shadow var(--rp-transition);
+  outline: none;
+}
+
+.rp-input:focus,
+.rp-textarea:focus,
+.rp-select:focus {
+  border-color: var(--rp-amber);
+  box-shadow: 0 0 0 3px rgba(192,122,32,0.15);
+}
+
+.rp-textarea { resize: vertical; min-height: 100px; }
+
+.rp-form-group { margin-bottom: var(--rp-space-5); }
+
+
+/* -- Navigatie -- */
+
+.rp-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--rp-space-6);
+  padding: var(--rp-space-4) var(--rp-space-6);
+  background: var(--rp-dark);
+  border-bottom: 2px solid var(--rp-amber);
+}
+
+.rp-nav-brand {
+  font-size: var(--rp-text-lg);
+  font-weight: 600;
+  color: var(--rp-white);
+  text-decoration: none;
+}
+
+.rp-nav-link {
+  font-size: var(--rp-text-sm);
+  color: var(--rp-gray-300);
+  text-decoration: none;
+  transition: color var(--rp-transition);
+}
+
+.rp-nav-link:hover,
+.rp-nav-link.active {
+  color: var(--rp-amber-light);
+  text-decoration: none;
+}
+
+
+/* -- Hero sectie -- */
+
+.rp-hero {
+  padding: var(--rp-space-16) var(--rp-space-6);
+  background: var(--rp-dark);
+  color: var(--rp-off-white);
+  position: relative;
+  overflow: hidden;
+}
+
+.rp-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: linear-gradient(to bottom, var(--rp-amber), var(--rp-red));
+}
+
+.rp-hero h1 { color: var(--rp-white); }
+.rp-hero .rp-lead { color: var(--rp-gray-300); }
+
+
+/* -- Accent lijn -- */
+
+.rp-accent-line {
+  display: flex;
+  align-items: center;
+  gap: var(--rp-space-2);
+  margin-bottom: var(--rp-space-4);
+}
+
+.rp-accent-line::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--rp-amber);
+  border-radius: 1px;
+}
+
+.rp-accent-line.red::before { background: var(--rp-red); }
+
+
+/* -- Sectie -- */
+
+.rp-section { padding: var(--rp-space-12) 0; }
+.rp-section-sm { padding: var(--rp-space-8) 0; }
+
+
+/* -- Divider met label -- */
+
+.rp-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--rp-space-3);
+  margin: var(--rp-space-6) 0;
+  color: var(--rp-color-text-muted);
+  font-size: var(--rp-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rp-divider::before,
+.rp-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rp-color-border);
+}
+
+
+/* -- Alert / Notificatie -- */
+
+.rp-alert {
+  padding: var(--rp-space-4) var(--rp-space-5);
+  border-radius: var(--rp-radius);
+  border-left: 3px solid;
+  font-size: var(--rp-text-sm);
+  margin-bottom: var(--rp-space-4);
+}
+
+.rp-alert-amber {
+  background: rgba(192,122,32,0.08);
+  border-color: var(--rp-amber);
+  color: var(--rp-amber-dark);
+}
+
+.rp-alert-red {
+  background: rgba(176,64,48,0.08);
+  border-color: var(--rp-red);
+  color: var(--rp-red-dark);
+}
+
+.rp-alert-dark {
+  background: var(--rp-dark-2);
+  border-color: var(--rp-gray-500);
+  color: var(--rp-off-white);
+}
+
+
+/* ============================================================
+   6. GLASSMORPHISM
+   ============================================================ */
+
+/* Glass card — doorzichtig element met frosted-glass effect.
+   Laat de achtergrond doorschemeren, geeft diepte en context.
+   Gebruik op donkere of gekleurde achtergronden voor beste effect. */
+
+.rp-glass {
+  background: rgba(244, 239, 230, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(244, 239, 230, 0.18);
+  border-radius: var(--rp-radius-lg);
+  box-shadow: 0 4px 24px rgba(30, 28, 26, 0.10);
+}
+
+.rp-glass-card {
+  background: rgba(244, 239, 230, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(244, 239, 230, 0.18);
+  border-radius: var(--rp-radius-lg);
+  padding: var(--rp-space-6);
+  box-shadow: 0 4px 24px rgba(30, 28, 26, 0.10);
+}
+
+/* Glass op lichte achtergrond */
+.rp-glass-light {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.50);
+  border-radius: var(--rp-radius-lg);
+  box-shadow: 0 4px 24px rgba(30, 28, 26, 0.06);
+}
+
+/* Glass met amber tint */
+.rp-glass-amber {
+  background: rgba(192, 122, 32, 0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(192, 122, 32, 0.20);
+  border-radius: var(--rp-radius-lg);
+  box-shadow: 0 4px 24px rgba(192, 122, 32, 0.08);
+}
+
+/* Glass button */
+.rp-btn-glass {
+  background: rgba(244, 239, 230, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--rp-off-white);
+  border: 1px solid rgba(244, 239, 230, 0.25);
+}
+
+.rp-btn-glass:hover {
+  background: rgba(244, 239, 230, 0.25);
+  color: var(--rp-white);
+  text-decoration: none;
+}
+
+
+/* ============================================================
+   7. NEUMORPHISM
+   ============================================================ */
+
+/* Neumorphic elementen lijken uit de achtergrond geextrudeerd.
+   Werkt het best op de standaard off-white achtergrond (--rp-off-white).
+   Zorg dat typografie en hiërarchie de leesbaarheid dragen,
+   de soft shadows zijn visuele verfijning, niet structureel. */
+
+.rp-neu {
+  background: var(--rp-off-white);
+  border-radius: var(--rp-radius-lg);
+  box-shadow:
+    6px 6px 14px rgba(30, 28, 26, 0.10),
+   -6px -6px 14px rgba(255, 255, 255, 0.70);
+  border: none;
+}
+
+.rp-neu-card {
+  background: var(--rp-off-white);
+  border-radius: var(--rp-radius-xl);
+  padding: var(--rp-space-6);
+  box-shadow:
+    6px 6px 14px rgba(30, 28, 26, 0.10),
+   -6px -6px 14px rgba(255, 255, 255, 0.70);
+  border: none;
+}
+
+/* Ingedrukt / inset — voor inputs, sliders, inactieve elementen */
+.rp-neu-inset {
+  background: var(--rp-off-white);
+  border-radius: var(--rp-radius-lg);
+  box-shadow:
+    inset 4px 4px 8px rgba(30, 28, 26, 0.08),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.60);
+  border: none;
+}
+
+/* Neumorphic button */
+.rp-btn-neu {
+  background: var(--rp-off-white);
+  color: var(--rp-color-text);
+  border: none;
+  border-radius: var(--rp-radius-lg);
+  box-shadow:
+    4px 4px 10px rgba(30, 28, 26, 0.10),
+   -4px -4px 10px rgba(255, 255, 255, 0.70);
+  transition: box-shadow var(--rp-transition), transform var(--rp-transition);
+}
+
+.rp-btn-neu:hover {
+  box-shadow:
+    2px 2px 6px rgba(30, 28, 26, 0.10),
+   -2px -2px 6px rgba(255, 255, 255, 0.70);
+  text-decoration: none;
+}
+
+.rp-btn-neu:active {
+  box-shadow:
+    inset 3px 3px 6px rgba(30, 28, 26, 0.10),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.60);
+}
+
+/* Neumorphic input */
+.rp-input-neu {
+  width: 100%;
+  font-family: var(--rp-font-sans);
+  font-size: var(--rp-text-base);
+  color: var(--rp-color-text);
+  background: var(--rp-off-white);
+  border: none;
+  border-radius: var(--rp-radius-lg);
+  padding: var(--rp-space-3) var(--rp-space-4);
+  box-shadow:
+    inset 3px 3px 6px rgba(30, 28, 26, 0.08),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.60);
+  outline: none;
+  transition: box-shadow var(--rp-transition);
+}
+
+.rp-input-neu:focus {
+  box-shadow:
+    inset 3px 3px 6px rgba(30, 28, 26, 0.08),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.60),
+    0 0 0 3px rgba(192, 122, 32, 0.15);
+}
+
+/* Neumorphic dark variant */
+.rp-neu-dark {
+  background: var(--rp-dark);
+  border-radius: var(--rp-radius-lg);
+  box-shadow:
+    6px 6px 14px rgba(0, 0, 0, 0.30),
+   -6px -6px 14px rgba(58, 56, 54, 0.25);
+  border: none;
+}
+
+
+/* ============================================================
+   8. BENDY BUTTONS
+   ============================================================ */
+
+/* Buttons die reageren op waar je drukt — kantelen naar het drukpunt
+   met dynamische belichting en schaduw. Gebaseerd op Malewicz's
+   concept van fysiek-responsieve UI-elementen.
+   Vereist de JS-snippet onderaan dit bestand of in preview.html. */
+
+.rp-btn-bendy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rp-space-2);
+  padding: var(--rp-space-4) var(--rp-space-8);
+  font-family: var(--rp-font-sans);
+  font-size: var(--rp-text-sm);
+  font-weight: 600;
+  line-height: 1;
+  border-radius: var(--rp-radius-lg);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 800px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  /* Standaard: amber variant */
+  background: linear-gradient(145deg, var(--rp-amber-light), var(--rp-amber));
+  color: var(--rp-white);
+  box-shadow:
+    0 4px 12px rgba(192, 122, 32, 0.30),
+    0 1px 3px rgba(30, 28, 26, 0.10);
+}
+
+/* Interne highlight-laag die meebeweegt bij tilt */
+.rp-btn-bendy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--bendy-x, 50%) var(--bendy-y, 50%),
+    rgba(255, 255, 255, 0.30) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+
+.rp-btn-bendy:hover::before {
+  opacity: 1;
+}
+
+/* Bendy dark variant */
+.rp-btn-bendy-dark {
+  background: linear-gradient(145deg, var(--rp-dark-2), var(--rp-dark));
+  color: var(--rp-off-white);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.30),
+    0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Bendy red variant */
+.rp-btn-bendy-red {
+  background: linear-gradient(145deg, var(--rp-red-light), var(--rp-red));
+  color: var(--rp-white);
+  box-shadow:
+    0 4px 12px rgba(176, 64, 48, 0.30),
+    0 1px 3px rgba(30, 28, 26, 0.10);
+}
+
+/* Bendy groot formaat */
+.rp-btn-bendy-lg {
+  padding: var(--rp-space-5) var(--rp-space-12);
+  font-size: var(--rp-text-base);
+  border-radius: var(--rp-radius-xl);
+}
+
+
+/* ============================================================
+   9. UTILITIES
+   ============================================================ */
+
+.rp-text-center  { text-align: center; }
+.rp-text-right   { text-align: right; }
+.rp-text-amber   { color: var(--rp-amber); }
+.rp-text-red     { color: var(--rp-red); }
+.rp-text-muted   { color: var(--rp-color-text-muted); }
+.rp-text-white   { color: var(--rp-white); }
+
+.rp-bg-amber     { background: var(--rp-amber); color: var(--rp-white); }
+.rp-bg-dark      { background: var(--rp-dark); color: var(--rp-off-white); }
+.rp-bg-card      { background: var(--rp-color-bg-card); }
+
+.rp-mt-4  { margin-top: var(--rp-space-4); }
+.rp-mt-8  { margin-top: var(--rp-space-8); }
+.rp-mb-4  { margin-bottom: var(--rp-space-4); }
+.rp-mb-8  { margin-bottom: var(--rp-space-8); }
+.rp-p-4   { padding: var(--rp-space-4); }
+.rp-p-6   { padding: var(--rp-space-6); }
+.rp-p-8   { padding: var(--rp-space-8); }
+
+.rp-rounded    { border-radius: var(--rp-radius); }
+.rp-rounded-lg { border-radius: var(--rp-radius-lg); }
+.rp-shadow     { box-shadow: var(--rp-shadow); }
+.rp-shadow-lg  { box-shadow: var(--rp-shadow-lg); }
+
+.rp-hidden  { display: none; }
+.rp-sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); border: 0;
+}

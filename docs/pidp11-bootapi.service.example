@@ -1,0 +1,22 @@
+# Example systemd unit for pidp11-bootapi.py -- runs ON THE MACHINE whose
+# console you want the agent to be able to read/type into (for the PiDP-11
+# that's the Pi driving the replica itself). Needs the `screen` package and
+# read/write access to the `screen` session your SIMH console runs in.
+#
+# Copy to /etc/systemd/system/pidp11-bootapi.service, adjust the path/user,
+# then:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now pidp11-bootapi
+
+[Unit]
+Description=PiDP-11 boot-API (screen bridge for the Hacker Replicant)
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/pidp11-hacker-replicant/pidp11-bootapi.py
+Restart=always
+RestartSec=5
+User=pi
+
+[Install]
+WantedBy=multi-user.target

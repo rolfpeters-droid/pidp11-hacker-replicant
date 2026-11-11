@@ -1,0 +1,23 @@
+# Example systemd unit. Copy to /etc/systemd/system/pidp11-hacker-replicant.service,
+# adjust the paths/user, then:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now pidp11-hacker-replicant
+#
+# Reads config from .env in WorkingDirectory via EnvironmentFile -- copy
+# .env.example to .env there first and fill it in.
+
+[Unit]
+Description=PiDP-11 Hacker Replicant - chat backend
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/node /opt/pidp11-hacker-replicant/server.js
+WorkingDirectory=/opt/pidp11-hacker-replicant
+EnvironmentFile=/opt/pidp11-hacker-replicant/.env
+Restart=always
+RestartSec=5
+User=pi
+
+[Install]
+WantedBy=multi-user.target

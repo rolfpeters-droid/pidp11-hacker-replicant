@@ -1,0 +1,16 @@
+{
+  "name": "pidp11-hacker-replicant",
+  "version": "0.1.0",
+  "private": false,
+  "description": "AI tutor/copilot chat panel for Oscar Vermeulen's PiDP-11 replica -- knows 2.11BSD, RT-11, RSX-11M+, RSTS/E and Unix v1-v7, and can optionally operate the machine's console. LLM-agnostic: works with any OpenAI-compatible backend (Ollama locally by default, or any hosted provider).",
+  "type": "module",
+  "main": "server.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0"
+  }
+}
