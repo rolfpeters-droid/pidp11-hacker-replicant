@@ -17,7 +17,10 @@ of a small family built for different PDP/VAX/HP replicas; this one is
 PiDP-11-specific, but the pattern (web console + a tiny `screen`-reading
 boot-API + a chat panel + an LLM backend) is reusable for other machines too.
 
-![screenshot placeholder](docs/screenshot.png)
+![PiDP-11 Hacker Replicant — web console on the left, chat panel on the right](docs/screenshot.png)
+
+*Screenshot of the original internal build (Dutch UI) — the version in this
+repo has the same layout with an English-language interface.*
 
 ## How it works
 
