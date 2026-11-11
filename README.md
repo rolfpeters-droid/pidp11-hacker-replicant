@@ -80,10 +80,28 @@ path for both:
 No vendor SDK, no hard dependency on any single provider, no API key
 required at all if you only use the local backend.
 
+**A heads-up on local "thinking" models:** Ollama's OpenAI-compatible
+endpoint (what the local backend uses) doesn't currently expose a way to
+turn off a reasoning model's internal "thinking" step the way Ollama's own
+native API does (`think: false`) — tested directly against Ollama 0.x as of
+Nov 2026, passing `think: false` in the request body had no effect via
+`/v1/chat/completions`. For `qwen3` specifically this means every reply
+carries a few hundred tokens of hidden reasoning, adding roughly 10-20
+extra seconds per turn compared to what you'd get calling Ollama's native
+API directly. `LLM_TIMEOUT_MS` already accounts for this (default 180s), so
+nothing breaks, it just feels slower than it has to. If snappier replies
+matter more to you than using a reasoning model locally, point
+`LOCAL_MODEL` at a non-thinking model instead (`llama3.1`, `mistral-nemo`,
+etc. all support tool calling without this overhead).
+
 ## Setup
 
 ### Prerequisites
 
+- GNU `screen`, installed on the Pi (`apt install screen` on Debian/Raspberry
+  Pi OS if it isn't already — it almost certainly is on a standard PiDP-11
+  image, since the official toolchain already depends on it). Both
+  `webconsole/app.py` and `pidp11-bootapi.py` shell out to it directly.
 - A PiDP-11 running Oscar Vermeulen's standard software image (SIMH under
   `/opt/pidp11/`, boot images in `/opt/pidp11/systems/`, the `pidp11.sh`
   launcher). If `screen -ls` shows a `pidp11` session and
