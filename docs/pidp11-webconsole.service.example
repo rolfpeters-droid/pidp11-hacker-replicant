@@ -1,0 +1,27 @@
+# Example systemd unit for the web console (webconsole/app.py) -- this is
+# what the Hacker Replicant's left panel actually shows (CONSOLE_URL).
+# Needs a venv with webconsole/requirements.txt installed:
+#
+#   cd /opt/pidp11-hacker-replicant/webconsole
+#   python3 -m venv venv
+#   venv/bin/pip install -r requirements.txt
+#
+# Then copy this file to /etc/systemd/system/pidp11-webconsole.service,
+# adjust the path/user, and:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now pidp11-webconsole
+
+[Unit]
+Description=PiDP-11 Web Console (FastAPI/uvicorn)
+After=network.target
+
+[Service]
+User=pi
+Group=pi
+WorkingDirectory=/opt/pidp11-hacker-replicant/webconsole
+ExecStart=/opt/pidp11-hacker-replicant/webconsole/venv/bin/python -m uvicorn app:app --host 0.0.0.0 --port 8080
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
